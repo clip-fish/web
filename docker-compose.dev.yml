@@ -1,0 +1,13 @@
+services:
+  web:
+    build: .
+    ports: ["5173:5173"]          # Vite dev port
+    volumes:
+      - .:/                    # live code
+      - /node_modules         # keep deps inside the container
+    command: npm run dev
+    depends_on: [ws, api]
+    volumes:
+      - ./web:/app
+      - ./config.json:/app/public/config.json:ro
+      - /app/node_modules

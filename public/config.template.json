@@ -1,0 +1,23 @@
+{
+  "signaling":   "WebSocket",
+  "sessionStore":"Express",
+  "peerImpl":    "SimplePeer",
+  "wsUrl":       "ws://localhost:3000",
+  "apiUrl":      "http://localhost:2000",
+
+  "firebase": {
+    "apiKey":            "",
+    "authDomain":        "",
+    "projectId":         "",
+    "storageBucket":     "",
+    "messagingSenderId": "",
+    "appId":             "",
+    "measurementId":     ""
+  },
+
+  "storeTextMessageContent":  false,
+  "defaultMaxTransferSize":   262144,
+  "maxMessageChunkSize":      2097152,
+  "messageLoadTimeout":       10000,
+  "enableAnalytics":          false
+}

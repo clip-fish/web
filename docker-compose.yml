@@ -1,0 +1,18 @@
+services:
+  web:
+    image: ghcr.io/clip-fish/web:latest
+    ports: ["80:80"]
+    depends_on: [ws, api]
+    volumes: [./config.json:/usr/share/nginx/html/config.json:ro]
+
+  ws:
+    image: ghcr.io/clip-fish/ws-signaling:${WS_TAG:-latest}
+    ports: ["3000:3000"]
+
+  api:
+    image: ghcr.io/clip-fish/session-api:${API_TAG:-latest}
+    ports: ["2000:2000"]
+
+networks:
+  default:
+    driver: bridge
