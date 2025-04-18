@@ -72,7 +72,6 @@ function App() {
                 <CssBaseline />
                 <SessionRepositoryProvider repo={sessionRepo}>
                     <Routes>
-                        {/*TODO BREAKS WEB CRAWLER???*/}
                         <Route path="/" element={<SessionPage />} />
                         <Route path="/session/:sessionId" element={<SessionPage />} />
                     </Routes>

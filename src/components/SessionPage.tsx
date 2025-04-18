@@ -25,6 +25,7 @@ import ActionBar from "./ActionBar.tsx";
 import SessionLinkShare from "./SessionLinkShare.tsx";
 import SessionLinkShareOverlay from "./SessionLinkShareOverlay";
 import {useTheme} from "@mui/material/styles";
+import FooterSection from "./FooterSection.tsx";
 
 const SessionPage: React.FC = () => {
     const theme = useTheme();
@@ -216,6 +217,8 @@ const SessionPage: React.FC = () => {
                     })}
                 </Box>
             </Container>
+
+            <FooterSection />
 
             <SessionLinkShareOverlay
               open={shareOpen}
