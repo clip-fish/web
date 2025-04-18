@@ -4,6 +4,7 @@ import {Device} from "../../types.ts";
 import {FirestoreMessage, FirestoreService} from "../FirestoreService.ts";
 import {ITimestamp} from "../../models/timestamp/ITimestamp.ts";
 import {MyFirestoreTimestamp} from "../../models/timestamp/FirestoreTimestamp.ts";
+import {Config} from "../../config/config.ts";
 
 export function toFirestore(message: Message): FirestoreMessage {
     const base: FirestoreMessage = {
@@ -11,13 +12,12 @@ export function toFirestore(message: Message): FirestoreMessage {
         type: message.type,
         sender: message.sender,
         senderName: message.senderName,
-        // Use the timestamp wrapper’s toSerializable() method.
         sentAt: message.sentAt.toSerializable(),
         status: message.status,
     };
 
     return (message.type === MessageType.TEXT)
-        ? { ...base }
+        ? Config.storeTextMessageContent ? { ...base, text: message.text } : { ...base }
         : { ...base, filename: message.filename, fileSize: message.fileSize }
 }
 
@@ -32,7 +32,7 @@ export function fromFirestore(fsMessage: FirestoreMessage): Message {
     };
 
     return (fsMessage.type === MessageType.TEXT)
-        ? base as TextMessage
+        ? Config.storeTextMessageContent ? { ...base, text: fsMessage.text } as TextMessage : base as TextMessage
         : { ...base, filename: fsMessage.filename, fileSize: fsMessage.fileSize } as FileMessage
 }
 

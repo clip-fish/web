@@ -19,6 +19,7 @@ import {
 import {Device, Signal} from "../types";
 import {MessageStatus, MessageType} from "../models/Message.ts";
 import {MyFirestoreTimestamp} from "../models/timestamp/FirestoreTimestamp.ts";
+import {Config} from "../config/config.ts";
 
 export interface FirestoreMessage {
     id: string;
@@ -27,6 +28,8 @@ export interface FirestoreMessage {
     senderName: string;
     sentAt: Timestamp | FieldValue;
     status: MessageStatus;
+
+    text?: string;
 
     filename?: string;
     fileSize?: number;
@@ -124,7 +127,7 @@ export class FirestoreService {
                     status: docSnap.data().status,
                 };
                 msg = (docSnap.data().type === MessageType.TEXT)
-                    ? { ...msg, type: MessageType.TEXT, /*, text: docSnap.data().text */ }
+                    ? Config.storeTextMessageContent ? { ...msg, type: MessageType.TEXT, text: docSnap.data().text  } : { ...msg, type: MessageType.TEXT }
                     : {
                         ...msg,
                         type: MessageType.FILE,

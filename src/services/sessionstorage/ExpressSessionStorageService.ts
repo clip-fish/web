@@ -5,6 +5,7 @@ import {BaseMessage, FileMessage, Message, MessageStatus, MessageType, TextMessa
 import { Device } from "../../types.ts";
 import {ExpressTimestamp} from "../../models/timestamp/ExpressTimestamp.ts";
 import {ITimestamp} from "../../models/timestamp/ITimestamp.ts";
+import {Config} from "../../config/config.ts";
 
 export interface ExpressMessage {
     id: string;
@@ -13,6 +14,9 @@ export interface ExpressMessage {
     senderName: string;
     sentAt: string;
     status: MessageStatus;
+
+    text?: string;
+
     filename?: string;
     fileSize?: number;
 }
@@ -28,7 +32,7 @@ export function toExpress(message: Message): ExpressMessage {
     };
 
     return (message.type === MessageType.TEXT)
-        ? base
+        ? Config.storeTextMessageContent ? { ...base, text: message.text } : { ...base }
         : { ...base, filename: message.filename, fileSize: message.fileSize }
 }
 
@@ -43,7 +47,7 @@ export function fromExpress(expressMsg: ExpressMessage): Message {
     };
 
     return (expressMsg.type === MessageType.TEXT)
-        ? base as TextMessage
+        ? Config.storeTextMessageContent ? { ...base, text: expressMsg.text } as TextMessage : base as TextMessage
         : { ...base, filename: expressMsg.filename, fileSize: expressMsg.fileSize } as FileMessage
 }
 
