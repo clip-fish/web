@@ -64,7 +64,7 @@ Clip Fish is designed to be self‑hosted. You can run the entire stack on your 
 - **Firestore**: Firebase Firestore (stores signals in a collection)  
 
 **Session Storage** (choose one)  
-- **Express**: In‑memory Node.js API (no persistence beyond runtime)  
+- **Express**: Node.js API with MongoDB persistence  
 - **Firestore**: Firebase Firestore (persistent, multi‑region storage)  
 
 **Runtime Config**  
@@ -105,10 +105,11 @@ You can run the entire Clip Fish stack with one command using Docker Compose:
 ```bash
 docker compose up
 ```
-This will start three services on your local machine:
+This will start four services on your local machine:
 - `web` – the Vite/React front‑end served by Nginx
 - `ws` – the WebSocket signalling server
-- `api` – the Express session‑storage API
+- `api` – the Express + MongoDB session‑storage API
+- `mongo` – the MongoDB server (persisting session metadata)
 
 By default the front‑end will mount your local `config.json` (created from `config.template.json`) at runtime.
 
@@ -126,7 +127,6 @@ Use the following command to copy [config.template.json](config.template.json) i
 
 ```bash
 cp config.template.json config.json
-# edit config.json keys: signaling, wsUrl, apiUrl, etc.
 ```
 
 You can then edit it as needed, and mount it.

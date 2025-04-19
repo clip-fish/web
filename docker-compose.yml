@@ -3,16 +3,29 @@ services:
     image: ghcr.io/clip-fish/web:master
     ports: ["80:80"]
     depends_on: [ws, api]
-    volumes: [./config.json:/usr/share/nginx/html/config.json:ro]
+    volumes:
+      - ./config.json:/usr/share/nginx/html/config.json:ro
 
   ws:
     image: ghcr.io/clip-fish/ws-server:master
     ports: ["3000:3000"]
 
+  mongo:
+    image: mongo:6
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "27017:27017"
+
   api:
     image: ghcr.io/clip-fish/session-api:master
-    ports: ["2000:2000"]
+    environment:
+      MONGO_URI: mongodb://mongo:27017/session-api
+    depends_on:
+      - mongo
+    ports:
+      - "2000:2000"
 
-networks:
-  default:
-    driver: bridge
+volumes:
+  mongo-data: {}
